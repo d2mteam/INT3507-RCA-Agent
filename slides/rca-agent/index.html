@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/base.css">
 <link rel="stylesheet" id="theme-link" href="assets/themes/corporate-clean.css">
 <link rel="stylesheet" href="assets/animations/animations.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="assets/katex.min.css">
 <style>
 /* ===== UET academic look (theo mẫu docs/slide/Slide.pdf) ===== */
 :root{
@@ -28,6 +28,11 @@ body{background:var(--bg);font-family:var(--font-sans)}
 .uet-footer{position:absolute;left:0;right:0;bottom:0;height:46px;background:var(--accent);color:var(--accent-ink);
   display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:20px;font-weight:600;z-index:15}
 .uet-footer .slide-number::after{content:none}
+.nav-btns{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:14px}
+.nav-btn{font:inherit;font-size:20px;font-weight:600;color:var(--accent-ink);background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.55);border-radius:6px;padding:3px 22px;cursor:pointer;line-height:1.4}
+.nav-btn:hover{background:rgba(255,255,255,.28)}
+.nav-btn:active{transform:translateY(1px)}
+@media print{.nav-btns{display:none}}
 .uet-logos{position:absolute;top:30px;right:40px;display:flex;gap:30px;z-index:15}
 .uet-logos img{width:118px;height:118px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .deck:has(.slide.cover.is-active) .uet-logos{display:none}
@@ -81,10 +86,10 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
 .cover .who{font-size:30px;line-height:2}
 .cover .who b{display:inline-block;min-width:260px;text-align:right;margin-right:24px}
 /* agenda */
-.agenda{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;margin-top:70px}
+.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:70px}
 .agenda .it{background:var(--accent);color:var(--accent-ink);border-radius:18px;height:390px;padding:30px 34px;display:flex;flex-direction:column}
 .agenda .it .n{font-size:44px;font-weight:700}
-.agenda .it .t{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:34px;font-weight:700;line-height:1.35}
+.agenda .it .t{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:31px;font-weight:700;line-height:1.35}
 .agenda .it .d{font-size:22px;opacity:.85;text-align:center}
 .center-title{text-align:center;font-size:64px;font-weight:700;color:var(--accent);margin:0}
 /* section divider */
@@ -135,7 +140,7 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
 <body data-themes="corporate-clean" data-theme-base="assets/themes/">
 <div class="deck">
   <div class="uet-logos"><img src="img/logo0.png" alt=""><img src="img/logo1.png" alt=""></div>
-  <div class="uet-footer"><span>VNU UET - Faculty of Information Technology</span><span class="slide-number"></span></div>
+  <div class="uet-footer"><span>VNU UET - Faculty of Information Technology</span><span class="nav-btns"><button type="button" class="nav-btn" data-key="ArrowLeft" aria-label="Slide trước">&#8249; Trước</button><button type="button" class="nav-btn" data-key="ArrowRight" aria-label="Slide sau">Sau &#8250;</button></span><span class="slide-number"></span></div>
 
   <!-- ================= COVER ================= -->
   <section class="slide cover" data-title="Trang bìa">
@@ -147,8 +152,7 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
     <div class="rule"></div>
     <div class="kind">Bài tập lớn – INT3507</div>
     <div class="who">
-      <div><b>Nhóm thực hiện:</b>[Họ tên – MSSV]</div>
-      <div><b>Giảng viên hướng dẫn:</b>[Họ tên giảng viên]</div>
+      <div><b>Nhóm thực hiện:</b>Nguyễn Ngọc Phát · Trần Văn Minh · Dương Đình Minh</div>
     </div>
     <div class="notes">Chào thầy cô và các bạn. Nhóm em trình bày đề tài RCA Agent: tìm nguyên nhân gốc sự cố trong hệ thống nhiều service từ metric, trace và log.</div>
   </section>
@@ -159,9 +163,10 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
     <div class="agenda anim-stagger-list" data-anim-target>
       <div class="it"><div class="n">01</div><div class="t">GIỚI THIỆU<br>ĐỀ TÀI</div><div class="d">Bối cảnh · dữ liệu · khó khăn</div></div>
       <div class="it"><div class="n">02</div><div class="t">CÁC PHƯƠNG PHÁP<br>HIỆN CÓ</div><div class="d">Kỹ sư tự điều tra · dùng LLM</div></div>
-      <div class="it"><div class="n">03</div><div class="t">MỤC TIÊU &amp;<br>MỨC ĐỘ GIẢI QUYẾT</div><div class="d">Phương pháp của nhóm · kết quả</div></div>
+      <div class="it"><div class="n">03</div><div class="t">PHƯƠNG PHÁP<br>CỦA NHÓM</div><div class="d">Công cụ · LLM · Workflow</div></div>
+      <div class="it"><div class="n">04</div><div class="t">MỤC TIÊU &amp;<br>MỨC ĐỘ GIẢI QUYẾT</div><div class="d">Ca minh họa · đánh giá</div></div>
     </div>
-    <div class="notes">Bài trình bày gồm 3 phần: giới thiệu đề tài, các phương pháp hiện có, và mục tiêu cùng mức độ giải quyết của nhóm.</div>
+    <div class="notes">Bài trình bày gồm 4 phần: giới thiệu đề tài, các phương pháp hiện có, phương pháp của nhóm, và mục tiêu cùng mức độ giải quyết.</div>
   </section>
 
   <!-- ================= 01 GIỚI THIỆU ================= -->
@@ -386,31 +391,29 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
     <div class="notes">Mục tiêu của hướng kết hợp: giảm ảnh hưởng của nhiễu và bớt phụ thuộc vào việc mô hình mạnh hay yếu.</div>
   </section>
 
-  <!-- ================= 03 MỤC TIÊU & MỨC ĐỘ GIẢI QUYẾT ================= -->
-  <section class="slide divider" data-title="03 Mục tiêu &amp; mức độ giải quyết">
+  <!-- ================= 03 PHƯƠNG PHÁP CỦA NHÓM ================= -->
+  <section class="slide divider" data-title="03 Phương pháp của nhóm">
     <div class="big">03</div>
-    <h2>Mục tiêu &amp; mức độ giải quyết của nhóm</h2>
-    <p>Phương pháp đề xuất: BARO + MicroRank + LLM · ca minh họa · đánh giá</p>
+    <h2>Phương pháp của nhóm</h2>
+    <p>Công cụ + LLM + Workflow · BARO · MicroRank · kiểm chứng bằng code</p>
   </section>
 
-  <section class="slide" data-title="Mục tiêu bài toán">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
-    <div class="sec-sub">Mục tiêu bài toán (hệ thống Bank của OpenRCA)</div>
-    <p class="lead">Mỗi sự cố: một <b>cửa sổ 30 phút</b> có 1–2 lỗi. Cần trả lời:</p>
-    <div class="g3" style="margin:16px 0 30px">
-      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Thời điểm</div><div class="l" style="color:#dbe3f2">sai số ≤ 60 giây</div></div>
-      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Máy</div><div class="l" style="color:#dbe3f2">1 trong 14</div></div>
-      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Lý do</div><div class="l" style="color:#dbe3f2">1 trong 8</div></div>
+  <section class="slide" data-title="Ý tưởng chung">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
+    <div class="sec-sub">Ý tưởng chung: chia việc cho ba thành phần</div>
+    <div class="g3 anim-stagger-list" data-anim-target style="margin-top:10px">
+      <div class="box" style="border-top:8px solid var(--accent)"><h4>Công cụ (code)</h4>Tính toán trên <b>toàn bộ dữ liệu giám sát</b>, trả về bản tóm tắt ngắn (vài chục dòng).</div>
+      <div class="box" style="border-top:8px solid var(--good)"><h4 style="color:var(--good)">LLM</h4>Đọc bản tóm tắt, <b>suy luận</b> dựa trên hiểu biết về hệ thống.<div class="small muted" style="margin-top:10px">VD: “1/4 số request bị lỗi, có thể 1 trong 4 máy cùng tầng gặp sự cố.”</div></div>
+      <div class="box" style="border-top:8px solid var(--warn)"><h4 style="color:var(--warn)">Workflow (code)</h4>Quy định <b>thứ tự các bước điều tra</b>, kiểm tra kết luận của LLM trước khi đi tiếp.</div>
     </div>
-    <table class="t">
-      <tr><th style="width:45%">14 máy</th><th>8 lý do</th></tr>
-      <tr><td>apache01/02, IG01/02, Tomcat01–04, MG01/02, Mysql01/02, Redis01/02</td><td>high CPU, high memory, network latency, network packet loss, disk I/O read, disk space, JVM CPU load, JVM OOM</td></tr>
-    </table>
-    <p class="lead" style="margin-top:24px">Đánh giá trên <b>40 câu hỏi (44 lỗi)</b> của hệ thống Bank.</p>
+    <div class="box navy" style="margin-top:44px;text-align:center">
+      Tránh hai điểm yếu của LLM: <b>không phải tự tính toán trên con số</b> và <b>không tự quyết định nên xem dữ liệu nào</b>.
+    </div>
+    <div class="notes">Không để LLM xử lý toàn bộ dữ liệu, cũng không chỉ dựa vào thống kê. Mỗi thành phần làm phần việc phù hợp với nó.</div>
   </section>
 
   <section class="slide" data-title="Hệ thống Bank">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">Hệ thống Bank</div>
     <svg viewBox="0 0 1660 330" width="1660" height="330" font-family="Be Vietnam Pro, Inter, sans-serif" style="align-self:center">
       <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#263c6b"/></marker></defs>
@@ -436,22 +439,8 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
     <div class="notes">Đặc điểm quan trọng: có bản sao nên failover che lỗi, và một số máy không có trace nên không thể chỉ dựa vào trace.</div>
   </section>
 
-  <section class="slide" data-title="Ý tưởng chung">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
-    <div class="sec-sub">Ý tưởng chung: chia việc cho ba thành phần</div>
-    <div class="g3 anim-stagger-list" data-anim-target style="margin-top:10px">
-      <div class="box" style="border-top:8px solid var(--accent)"><h4>🛠 Công cụ (code)</h4>Tính toán trên <b>toàn bộ dữ liệu giám sát</b>, trả về bản tóm tắt ngắn (vài chục dòng).</div>
-      <div class="box" style="border-top:8px solid var(--good)"><h4 style="color:var(--good)">🧠 LLM</h4>Đọc bản tóm tắt, <b>suy luận</b> dựa trên hiểu biết về hệ thống.<div class="small muted" style="margin-top:10px">VD: “1/4 số request bị lỗi, có thể 1 trong 4 máy cùng tầng gặp sự cố.”</div></div>
-      <div class="box" style="border-top:8px solid var(--warn)"><h4 style="color:var(--warn)">🔁 Workflow (code)</h4>Quy định <b>thứ tự các bước điều tra</b>, kiểm tra kết luận của LLM trước khi đi tiếp.</div>
-    </div>
-    <div class="box navy" style="margin-top:44px;text-align:center">
-      Tránh hai điểm yếu của LLM: <b>không phải tự tính toán trên con số</b> và <b>không tự quyết định nên xem dữ liệu nào</b>.
-    </div>
-    <div class="notes">Không để LLM xử lý toàn bộ dữ liệu, cũng không chỉ dựa vào thống kê. Mỗi thành phần làm phần việc phù hợp với nó.</div>
-  </section>
-
   <section class="slide" data-title="Workflow điều tra">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">Workflow điều tra 5 bước (theo trình tự của kỹ sư vận hành)</div>
     <table class="t" style="font-size:25px">
       <tr><th style="width:17%">Bước</th><th style="width:30%">Câu hỏi cần trả lời</th><th style="width:30%">Dữ liệu / công cụ</th><th>Kết quả</th></tr>
@@ -465,7 +454,7 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
   </section>
 
   <section class="slide" data-title="Pipeline">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">Pipeline triển khai: BARO + MicroRank + LLM</div>
     <div class="pipe" style="margin-top:6px">
       <div class="pn"><b>Nhận case</b>câu hỏi, khoảng thời gian, số lỗi</div>
@@ -487,12 +476,12 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
       <div style="text-align:center;font-size:40px;color:var(--accent)">←</div>
       <div class="pn llm"><b>LLM</b>chọn component, reason, onset, giải thích</div>
     </div>
-    <p class="small" style="text-align:center;margin-top:12px;color:var(--good);font-weight:600">↻ Chưa đạt: gửi lỗi kiểm tra cho LLM, tối đa 2 lần sửa</p>
+    <p class="small" style="text-align:center;margin-top:12px;color:var(--good);font-weight:600">Chưa đạt: gửi lỗi kiểm tra cho LLM, tối đa 2 lần sửa</p>
     <div class="box navy" style="margin-top:24px;text-align:center;padding:20px">Code làm các bước cố định; LLM chỉ <b>đọc bằng chứng đã được tóm tắt</b> rồi chọn.</div>
   </section>
 
   <section class="slide" data-title="Vai trò từng thành phần">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">Vai trò từng thành phần</div>
     <table class="t" style="font-size:26px">
       <tr><th style="width:22%">Thành phần</th><th style="width:44%">Làm gì</th><th>Mạnh với</th></tr>
@@ -506,7 +495,7 @@ pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;f
   </section>
 
   <section class="slide" data-title="Công cụ 1: BARO">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">Công cụ 1: phát hiện bất thường (BARO)</div>
     <div class="row" style="gap:50px">
       <div class="col">
@@ -540,7 +529,7 @@ MG02:    TCP FIN-WAIT
   </section>
 
   <section class="slide" data-title="Công cụ 2: Graph">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">Công cụ 2: đồ thị phụ thuộc dịch vụ (MicroRank + so traffic)</div>
     <div class="row" style="gap:50px">
       <div class="col">
@@ -566,7 +555,7 @@ MG02:    TCP FIN-WAIT
   </section>
 
   <section class="slide" data-title="LLM và kiểm chứng">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>03</span><span class="bar"></span><span>Phương pháp của nhóm</span></div>
     <div class="sec-sub">LLM suy luận trên kết quả tool + kiểm chứng bằng code</div>
     <div class="g2">
       <div class="box">
@@ -594,12 +583,43 @@ MG02:    TCP FIN-WAIT
     </div>
   </section>
 
+  <!-- ================= 04 MỤC TIÊU & MỨC ĐỘ GIẢI QUYẾT ================= -->
+  <section class="slide divider" data-title="04 Mục tiêu &amp; mức độ giải quyết">
+    <div class="big">04</div>
+    <h2>Mục tiêu &amp; mức độ giải quyết của nhóm</h2>
+    <p>Mục tiêu bài toán · ca minh họa · mức độ giải quyết · hướng phát triển</p>
+  </section>
+
+  <section class="slide" data-title="Mục tiêu bài toán">
+    <div class="sec"><span>04</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Mục tiêu bài toán (hệ thống Bank của OpenRCA)</div>
+    <p class="lead">Mỗi sự cố: một <b>cửa sổ 30 phút</b> có 1–2 lỗi. Cần trả lời:</p>
+    <div class="g3" style="margin:16px 0 26px">
+      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Thời điểm</div><div class="l" style="color:#dbe3f2">sai số ≤ 60 giây</div></div>
+      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Máy</div><div class="l" style="color:#dbe3f2">1 trong 14</div></div>
+      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Lý do</div><div class="l" style="color:#dbe3f2">1 trong 8</div></div>
+    </div>
+    <table class="t">
+      <tr><th style="width:45%">14 máy</th><th>8 lý do</th></tr>
+      <tr><td>apache01/02, IG01/02, Tomcat01–04, MG01/02, Mysql01/02, Redis01/02</td><td>high CPU, high memory, network latency, network packet loss, disk I/O read, disk space, JVM CPU load, JVM OOM</td></tr>
+    </table>
+    <div class="box navy" style="margin-top:26px">
+      <h4>Mục tiêu của nhóm</h4>
+      <div class="g3" style="gap:6px 30px;font-size:27px">
+        <div>• Giảm ảnh hưởng của <b>nhiễu</b></div>
+        <div>• Bớt phụ thuộc vào <b>mô hình mạnh hay yếu</b></div>
+        <div>• Kết luận có <b>bằng chứng kiểm chứng được</b></div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:20px">Phạm vi đánh giá: <b>40 câu hỏi (44 lỗi)</b> của hệ thống Bank.</p>
+  </section>
+
   <section class="slide" data-title="Ca xử lý tốt">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>04</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
     <div class="sec-sub">Ca minh họa: LLM xử lý tốt</div>
     <div class="g2">
       <div class="box good">
-        <div class="case-h"><h4 style="margin:0">MG02 mất gói (13:10)</h4><span class="tag" style="color:var(--good)">✔ đúng</span></div>
+        <div class="case-h"><h4 style="margin:0">MG02 mất gói (13:10)</h4><span class="tag" style="color:var(--good)">đúng</span></div>
         <p class="small muted">Hỏi máy + lý do · không có ảnh hưởng nghiệp vụ (failover che lỗi)</p>
         <ul class="dash small">
           <li><b>BARO:</b> đầu bảng là nhiễu: đĩa Mysql02 (824), core apache01 (412); MG02 chỉ FIN-WAIT 0→6.</li>
@@ -609,7 +629,7 @@ MG02:    TCP FIN-WAIT
         <p class="small" style="margin:8px 0 0"><span class="ok">Ưu:</span> lọc được nhiễu, không nhầm máy khỏe. <span class="hl">Nhược:</span> dựa vào một tín hiệu duy nhất.</p>
       </div>
       <div class="box good">
-        <div class="case-h"><h4 style="margin:0">Tomcat02 OOM (16:23)</h4><span class="tag" style="color:var(--good)">✔ đúng</span></div>
+        <div class="case-h"><h4 style="margin:0">Tomcat02 OOM (16:23)</h4><span class="tag" style="color:var(--good)">đúng</span></div>
         <p class="small muted">Chỉ hỏi thời điểm · phản hồi lên tới 9 giây</p>
         <ul class="dash small">
           <li>MicroRank xếp <b>MG02 hạng 1</b> (độ trễ lan từ Tomcat02).</li>
@@ -623,21 +643,21 @@ MG02:    TCP FIN-WAIT
   </section>
 
   <section class="slide" data-title="Ca chưa xử lý tốt">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>04</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
     <div class="sec-sub">Ca minh họa: LLM chưa xử lý tốt</div>
     <div class="g2">
       <div class="box bad">
-        <div class="case-h"><h4 style="margin:0">apache01 mất gói (20:25)</h4><span class="tag" style="color:var(--bad)">✘ sai</span></div>
+        <div class="case-h"><h4 style="margin:0">apache01 mất gói (20:25)</h4><span class="tag" style="color:var(--bad)">sai</span></div>
         <p class="small muted">Hỏi cả 3 trường · apache không có trace</p>
         <ul class="dash small">
           <li><b>BARO:</b> FIN-WAIT 0→59 <b>bị loại</b> (cột hằng số trước đó); đầu bảng là nhiễu, đĩa MG02 0→152 chỉ 1 phút.</li>
-          <li><b>Graph:</b> ✔ apache01 chỉ còn 5% traffic từ 20:25.</li>
+          <li><b>Graph:</b> apache01 chỉ còn 5% traffic từ 20:25.</li>
           <li><b>LLM:</b> chọn <b>MG02, disk I/O, 20:13</b>: bị con số 152 thu hút; kiểm chứng vẫn cho qua.</li>
         </ul>
         <p class="small" style="margin:8px 0 0"><span class="hl">Nhược:</span> tool đã tìm đúng nhưng nhiễu lấn át; BARO mất tín hiệu; kiểm chứng lỏng.</p>
       </div>
       <div class="box bad">
-        <div class="case-h"><h4 style="margin:0">Tomcat01 network latency (11:20)</h4><span class="tag" style="color:var(--bad)">✘ sai lý do</span></div>
+        <div class="case-h"><h4 style="margin:0">Tomcat01 network latency (11:20)</h4><span class="tag" style="color:var(--bad)">sai lý do</span></div>
         <p class="small muted">Hỏi máy + lý do · tỉ lệ thành công còn ~75%</p>
         <ul class="dash small">
           <li>Access log Tomcat01 về 0, 60 kết nối FIN-WAIT, packet ~1.050 → ~100.</li>
@@ -650,21 +670,21 @@ MG02:    TCP FIN-WAIT
   </section>
 
   <section class="slide" data-title="Mức độ giải quyết">
-    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec"><span>04</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
     <div class="sec-sub">Mức độ giải quyết</div>
     <div class="g3" style="gap:26px">
-      <div class="box good"><h4>✔ Đã giải quyết</h4><ul class="dash small">
+      <div class="box good"><h4>Đã giải quyết</h4><ul class="dash small">
         <li>Không đưa toàn bộ dữ liệu cho LLM: tool tóm tắt còn ~60 dòng</li>
         <li>LLM không tự tính toán trên con số</li>
         <li>Code cố định: <b>tái lập, kiểm chứng được</b>, nhanh</li>
         <li>Hai tool bù nhau: tài nguyên và mạng</li>
         <li>Vòng kiểm chứng bắt đáp án thiếu căn cứ</li></ul></div>
-      <div class="box warn"><h4>◐ Giải quyết một phần</h4><ul class="dash small">
+      <div class="box warn"><h4>Giải quyết một phần</h4><ul class="dash small">
         <li>Lọc nhiễu: được khi tóm tắt rõ, nhưng nhiễu lớn vẫn lấn át</li>
         <li>Máy không có trace: tool so traffic tìm đúng, LLM chưa luôn theo</li>
         <li>Kiểm chứng còn lỏng; hết lượt vẫn nộp đáp án chưa kiểm chứng</li>
         <li>BARO mất cột “phẳng rồi bật lên”; MicroRank thiên về IG/MG</li></ul></div>
-      <div class="box bad"><h4>✘ Chưa giải quyết</h4><ul class="dash small">
+      <div class="box bad"><h4>Chưa giải quyết</h4><ul class="dash small">
         <li>Phân biệt <b>latency</b> và <b>packet loss</b></li>
         <li>Chưa dùng log GC (lỗi OOM)</li>
         <li>Bằng chứng gom sẵn, chưa <b>đi lấy thêm theo giả thuyết</b></li>
@@ -683,6 +703,13 @@ MG02:    TCP FIN-WAIT
 
 </div>
 <script>
+// nút chuyển slide: gửi phím mũi tên cho runtime
+document.querySelectorAll('.nav-btn').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.dispatchEvent(new KeyboardEvent('keydown',{key:b.getAttribute('data-key'),bubbles:true}));
+    b.blur();
+  });
+});
 // token grid: 200 ô, mỗi ô ≈ 128K token; 1 ô = cửa sổ ngữ cảnh
 (function(){var g=document.getElementById('tok');if(!g)return;var h='';for(var i=0;i<200;i++)h+='<i'+(i===0?' class="on"':'')+'></i>';g.innerHTML=h;})();
 </script>
