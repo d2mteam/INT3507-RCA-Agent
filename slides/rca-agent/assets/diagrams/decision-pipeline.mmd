@@ -1,0 +1,7 @@
+graph LR
+    A["Bộ bằng chứng"] --> L["LLM đề xuất<br/>nguyên nhân"]
+    L --> V["Kiểm tra tính nhất quán<br/>với bằng chứng"]
+    V -->|Đạt hoặc hết lượt sửa| R["Lưu kết quả<br/>và trạng thái kiểm tra"]
+    V -->|Chưa đạt và còn lượt: phản hồi lỗi| L
+    classDef default fill:#eef2f8,stroke:#263c6b,color:#1f2a44;
+    linkStyle default stroke:#263c6b,stroke-width:2px;
