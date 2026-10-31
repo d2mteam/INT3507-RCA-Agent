@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RCA Agent</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" id="theme-link" href="assets/themes/corporate-clean.css">
+<link rel="stylesheet" href="assets/animations/animations.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+/* ===== UET academic look (theo mẫu docs/slide/Slide.pdf) ===== */
+:root{
+  --bg:#ffffff;--bg-soft:#f4f6fa;--surface:#ffffff;--surface-2:#eef2f8;
+  --text-1:#1f2a44;--text-2:#3d4a63;--text-3:#7a8599;
+  --accent:#263c6b;--accent-ink:#ffffff;--accent-2:#2f8f4e;--accent-3:#c0392b;
+  --good:#2f8f4e;--warn:#d9822b;--bad:#c0392b;
+  --border:rgba(38,60,107,.14);--border-strong:rgba(38,60,107,.32);
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;
+  --font-sans:'Be Vietnam Pro','Inter',sans-serif;--font-display:'Be Vietnam Pro','Inter',sans-serif;
+}
+body{background:var(--bg);font-family:var(--font-sans)}
+.slide{padding:170px 130px 100px;justify-content:center;font-size:30px;line-height:1.5;color:var(--text-1)}
+.slide p{margin:0 0 14px}
+/* chrome */
+.uet-footer{position:absolute;left:0;right:0;bottom:0;height:46px;background:var(--accent);color:var(--accent-ink);
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:20px;font-weight:600;z-index:15}
+.uet-footer .slide-number::after{content:none}
+.uet-logos{position:absolute;top:30px;right:40px;display:flex;gap:30px;z-index:15}
+.uet-logos img{width:118px;height:118px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.deck:has(.slide.cover.is-active) .uet-logos{display:none}
+/* section header */
+.sec{position:absolute;top:44px;left:64px;display:flex;align-items:center;gap:16px;font-weight:700;color:var(--accent);font-size:34px}
+.sec .bar{width:5px;height:38px;background:var(--accent);display:inline-block}
+.sec-sub{position:absolute;top:96px;left:150px;font-size:30px;font-weight:600;color:var(--accent)}
+/* text */
+.lead{font-size:32px;color:var(--text-1);max-width:1500px}
+ul.dash{list-style:none;padding:0;margin:0}
+ul.dash li{position:relative;padding-left:40px;margin-bottom:14px}
+ul.dash li::before{content:"-";position:absolute;left:8px;color:var(--accent);font-weight:700}
+b,strong{color:var(--accent);font-weight:700}
+.hl{color:var(--bad);font-weight:700}
+.ok{color:var(--good);font-weight:700}
+.muted{color:var(--text-3)}
+.small{font-size:27px}
+.src{position:absolute;bottom:64px;left:130px;font-size:20px;color:var(--text-3);font-style:italic}
+/* boxes */
+.box{border:2px solid var(--border);border-radius:var(--radius);padding:26px 30px;background:var(--surface)}
+.box h4{margin:0 0 12px;font-size:30px;color:var(--accent)}
+.box.navy{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.box.navy h4,.box.navy b{color:var(--accent-ink)}
+.box.good{border-color:color-mix(in srgb,var(--good) 55%,transparent);background:color-mix(in srgb,var(--good) 6%,#fff)}
+.box.good h4{color:var(--good)}
+.box.bad{border-color:color-mix(in srgb,var(--bad) 55%,transparent);background:color-mix(in srgb,var(--bad) 5%,#fff)}
+.box.bad h4{color:var(--bad)}
+.box.warn{border-color:color-mix(in srgb,var(--warn) 60%,transparent);background:color-mix(in srgb,var(--warn) 6%,#fff)}
+.box.warn h4{color:var(--warn)}
+.row{display:flex;gap:30px;align-items:flex-start}
+.col{flex:1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+/* tables */
+table.t{border-collapse:collapse;width:100%;font-size:27px;line-height:1.4}
+table.t th{background:var(--accent);color:var(--accent-ink);text-align:left;padding:14px 18px;font-weight:600}
+table.t td{padding:12px 18px;border-bottom:1px solid var(--border);vertical-align:top}
+table.t tr:nth-child(even) td{background:var(--bg-soft)}
+code,.mono{font-family:'JetBrains Mono',monospace;font-size:.85em}
+pre.code{background:#1f2a44;color:#e6ecf7;border-radius:10px;padding:20px 26px;font-size:22px;line-height:1.55;margin:10px 0;white-space:pre}
+/* cover */
+.cover{padding:60px 120px 110px;justify-content:flex-start;align-items:center;text-align:center}
+.cover .top{display:flex;align-items:center;gap:40px;align-self:flex-start;margin-left:0}
+.cover .top img{width:150px;height:150px;border-radius:50%}
+.cover .uni{font-size:28px;font-weight:700;color:var(--accent);text-align:left;line-height:1.5}
+.cover .uni span{color:var(--good)}
+.cover h1{font-size:62px;font-weight:600;color:var(--accent);line-height:1.3;margin:70px 0 30px;max-width:1600px}
+.cover .rule{width:600px;height:4px;background:var(--accent);margin:0 auto 30px}
+.cover .kind{font-size:34px;font-weight:700;color:var(--accent);margin-bottom:90px}
+.cover .who{font-size:30px;line-height:2}
+.cover .who b{display:inline-block;min-width:260px;text-align:right;margin-right:24px}
+/* agenda */
+.agenda{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;margin-top:70px}
+.agenda .it{background:var(--accent);color:var(--accent-ink);border-radius:18px;height:390px;padding:30px 34px;display:flex;flex-direction:column}
+.agenda .it .n{font-size:44px;font-weight:700}
+.agenda .it .t{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:34px;font-weight:700;line-height:1.35}
+.agenda .it .d{font-size:22px;opacity:.85;text-align:center}
+.center-title{text-align:center;font-size:64px;font-weight:700;color:var(--accent);margin:0}
+/* section divider */
+.divider{justify-content:center;align-items:center;text-align:center}
+.divider .big{font-size:180px;font-weight:800;color:var(--accent);line-height:1;opacity:.12}
+.divider h2{font-size:76px;color:var(--accent);margin:-60px 0 20px}
+.divider p{font-size:30px;color:var(--text-2)}
+/* stats */
+.stat{text-align:center;padding:34px 20px}
+.stat .v{font-size:84px;font-weight:800;color:var(--accent);line-height:1.1}
+.stat .l{font-size:26px;color:var(--text-2);margin-top:8px}
+.stat.red .v{color:var(--bad)}
+/* flow */
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .st{flex:1;border:2px solid var(--border-strong);border-radius:12px;padding:22px 18px;text-align:center;background:#fff;font-size:26px;display:flex;flex-direction:column;justify-content:center}
+.flow .st .k{font-size:22px;color:var(--text-3);font-weight:600}
+.flow .st.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.flow .st.on .k{color:#c9d4ea}
+.flow .ar{width:56px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:40px;font-weight:700}
+/* bars */
+.bars{display:flex;flex-direction:column;gap:18px}
+.bar-row{display:grid;grid-template-columns:640px 1fr 130px;align-items:center;gap:20px;font-size:24px}
+.bar-track{height:38px;background:var(--bg-soft);border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:6px}
+.bar-row .val{font-weight:700;color:var(--accent);font-size:28px}
+/* token grid */
+.tok{display:grid;grid-template-columns:repeat(20,1fr);gap:7px;width:720px}
+.tok i{display:block;aspect-ratio:1;background:#d9dfeb;border-radius:3px}
+.tok i.on{background:var(--bad)}
+/* tags */
+.tag{display:inline-block;padding:4px 14px;border-radius:999px;font-size:20px;font-weight:600;border:2px solid currentColor}
+.legend{display:flex;gap:30px;font-size:24px;margin-top:16px;justify-content:center}
+.legend span::before{content:"";display:inline-block;width:20px;height:20px;border-radius:4px;margin-right:10px;vertical-align:-3px;background:var(--c)}
+/* pipeline */
+.pipe{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:18px;align-items:center}
+.pn{border:2px solid var(--border-strong);border-radius:10px;padding:20px 16px;font-size:24px;line-height:1.35;text-align:center;background:#fff}
+.pn b{display:block;font-size:27px}
+.pn.llm{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pn.llm b{color:#fff}
+.pn.chk{border-color:var(--good);background:color-mix(in srgb,var(--good) 7%,#fff)}
+.pn.chk b{color:var(--good)}
+.katex{font-size:1.05em}
+.eq{background:var(--bg-soft);border-left:6px solid var(--accent);padding:18px 28px;border-radius:6px;margin:16px 0;font-size:30px}
+.case-h{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+.verdict{font-size:26px;font-weight:700}
+</style>
+</head>
+<body data-themes="corporate-clean" data-theme-base="assets/themes/">
+<div class="deck">
+  <div class="uet-logos"><img src="img/logo0.png" alt=""><img src="img/logo1.png" alt=""></div>
+  <div class="uet-footer"><span>VNU UET - Faculty of Information Technology</span><span class="slide-number"></span></div>
+
+  <!-- ================= COVER ================= -->
+  <section class="slide cover" data-title="Trang bìa">
+    <div class="top">
+      <img src="img/logo0.png" alt=""><img src="img/logo1.png" alt="">
+      <div class="uni">TRƯỜNG ĐẠI HỌC CÔNG NGHỆ - ĐẠI HỌC QUỐC GIA HÀ NỘI<br><span>KHOA CÔNG NGHỆ THÔNG TIN</span></div>
+    </div>
+    <h1>RCA Agent: Xác định nguyên nhân gốc sự cố<br>trong hệ thống nhiều service từ dữ liệu giám sát</h1>
+    <div class="rule"></div>
+    <div class="kind">Bài tập lớn – INT3507</div>
+    <div class="who">
+      <div><b>Nhóm thực hiện:</b>[Họ tên – MSSV]</div>
+      <div><b>Giảng viên hướng dẫn:</b>[Họ tên giảng viên]</div>
+    </div>
+    <div class="notes">Chào thầy cô và các bạn. Nhóm em trình bày đề tài RCA Agent: tìm nguyên nhân gốc sự cố trong hệ thống nhiều service từ metric, trace và log.</div>
+  </section>
+
+  <!-- ================= AGENDA ================= -->
+  <section class="slide" data-title="Nội dung" style="padding-top:110px">
+    <h2 class="center-title">Nội dung</h2>
+    <div class="agenda anim-stagger-list" data-anim-target>
+      <div class="it"><div class="n">01</div><div class="t">GIỚI THIỆU<br>ĐỀ TÀI</div><div class="d">Bối cảnh · dữ liệu · khó khăn</div></div>
+      <div class="it"><div class="n">02</div><div class="t">CÁC PHƯƠNG PHÁP<br>HIỆN CÓ</div><div class="d">Kỹ sư tự điều tra · dùng LLM</div></div>
+      <div class="it"><div class="n">03</div><div class="t">MỤC TIÊU &amp;<br>MỨC ĐỘ GIẢI QUYẾT</div><div class="d">Phương pháp của nhóm · kết quả</div></div>
+    </div>
+    <div class="notes">Bài trình bày gồm 3 phần: giới thiệu đề tài, các phương pháp hiện có, và mục tiêu cùng mức độ giải quyết của nhóm.</div>
+  </section>
+
+  <!-- ================= 01 GIỚI THIỆU ================= -->
+  <section class="slide" data-title="01 Giới thiệu">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <h2 style="font-size:46px;color:var(--accent);text-align:center;margin:-40px 0 30px;line-height:1.3">Xác định nguyên nhân gốc sự cố trong hệ thống<br>nhiều service từ dữ liệu giám sát</h2>
+    <svg viewBox="0 0 1600 560" width="1600" height="560" style="align-self:center" font-family="Be Vietnam Pro, Inter, sans-serif">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7a8599"/></marker></defs>
+      <g stroke="#7a8599" stroke-width="3" fill="none" marker-end="url(#ah)">
+        <path d="M250,280 L420,160"/><path d="M250,280 L420,400"/>
+        <path d="M600,160 L770,100"/><path d="M600,160 L770,260"/><path d="M600,400 L770,260"/><path d="M600,400 L770,440"/>
+        <path d="M950,100 L1120,170"/><path d="M950,260 L1120,170"/><path d="M950,260 L1120,380"/><path d="M950,440 L1120,380"/>
+      </g>
+      <g font-size="24" font-weight="600" text-anchor="middle">
+        <rect x="70" y="240" width="180" height="80" rx="14" fill="#fbe9d7" stroke="#d9822b" stroke-width="3"/><text x="160" y="288">Gateway</text>
+        <rect x="420" y="120" width="180" height="80" rx="14" fill="#fbe9d7" stroke="#d9822b" stroke-width="3"/><text x="510" y="168">App 1</text>
+        <rect x="420" y="360" width="180" height="80" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="510" y="408">App 2</text>
+        <rect x="770" y="60" width="180" height="80" rx="14" fill="#e3e6ec" stroke="#9aa3b5" stroke-width="3" stroke-dasharray="8 6"/><text x="860" y="108">Cache</text>
+        <rect x="770" y="220" width="180" height="80" rx="14" fill="#f7d9d5" stroke="#c0392b" stroke-width="4"/><text x="860" y="268">Middleware</text>
+        <rect x="770" y="400" width="180" height="80" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="860" y="448">Service</text>
+        <rect x="1120" y="130" width="180" height="80" rx="14" fill="#e3e6ec" stroke="#9aa3b5" stroke-width="3" stroke-dasharray="8 6"/><text x="1210" y="178">DB 1</text>
+        <rect x="1120" y="340" width="180" height="80" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="1210" y="388">DB 2</text>
+      </g>
+      <g font-size="22" fill="#3d4a63">
+        <rect x="1360" y="150" width="28" height="28" rx="5" fill="#f7d9d5" stroke="#c0392b" stroke-width="3"/><text x="1400" y="172">Nguyên nhân gốc</text>
+        <rect x="1360" y="210" width="28" height="28" rx="5" fill="#fbe9d7" stroke="#d9822b" stroke-width="3"/><text x="1400" y="232">Hệ quả lan ra</text>
+        <rect x="1360" y="270" width="28" height="28" rx="5" fill="#e3e6ec" stroke="#9aa3b5" stroke-width="3" stroke-dasharray="6 4"/><text x="1400" y="292">Nhiễu có từ trước</text>
+        <rect x="1360" y="330" width="28" height="28" rx="5" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="1400" y="352">Bình thường</text>
+      </g>
+    </svg>
+    <div class="notes">Hình minh họa: khi sự cố xảy ra, nhiều thành phần cùng bất thường. Chỉ một là nguyên nhân gốc (đỏ), số khác là hệ quả lan ra (cam) hoặc nhiễu đã có từ trước (xám).</div>
+  </section>
+
+  <section class="slide" data-title="Bối cảnh và vấn đề">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <div class="sec-sub">Bối cảnh và vấn đề</div>
+    <ul class="dash lead">
+      <li>Hệ thống phần mềm hiện nay gồm <b>nhiều service gọi lẫn nhau</b>.</li>
+      <li>Khi xảy ra sự cố, người vận hành phải tìm <b>nguyên nhân gốc</b> từ dữ liệu giám sát (<b>metric, trace, log</b>) rồi mới sửa được.</li>
+    </ul>
+    <div class="g3 mt-l anim-stagger-list" data-anim-target style="margin:26px 0 34px">
+      <div class="box navy" style="text-align:center"><h4>Thành phần nào?</h4>gây ra lỗi</div>
+      <div class="box navy" style="text-align:center"><h4>Lúc nào?</h4>lỗi bắt đầu</div>
+      <div class="box navy" style="text-align:center"><h4>Vì sao?</h4>lỗi xảy ra</div>
+    </div>
+    <ul class="dash lead">
+      <li>Cái khó: lúc sự cố, <b>nhiều thành phần cùng bất thường</b>: một số là <span class="hl">hệ quả lan ra</span>, một số là <span class="hl">nhiễu đã có từ trước</span>.</li>
+      <li>Bài toán: xác định đúng nguyên nhân gốc giữa hệ quả và nhiễu, <b>kèm bằng chứng</b> để người vận hành tin tưởng.</li>
+    </ul>
+    <div class="notes">Người vận hành cần biết ba điều: thành phần nào, lúc nào, vì sao. Khó ở chỗ phải tách nguyên nhân gốc khỏi hệ quả và nhiễu, và phải có bằng chứng.</div>
+  </section>
+
+  <section class="slide" data-title="Dữ liệu OpenRCA">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <div class="sec-sub">Dữ liệu sử dụng: OpenRCA (ICLR 2025)</div>
+    <div class="g4 anim-stagger-list" data-anim-target style="margin-top:20px">
+      <div class="box stat"><div class="v">335</div><div class="l">ca lỗi</div></div>
+      <div class="box stat"><div class="v">3</div><div class="l">hệ thống: Telecom, Bank, Market</div></div>
+      <div class="box stat"><div class="v">68,5 GB</div><div class="l">metric, trace, log</div></div>
+      <div class="box stat"><div class="v">30 phút</div><div class="l">cửa sổ của mỗi câu hỏi</div></div>
+    </div>
+    <div class="g3" style="margin-top:44px">
+      <div class="box"><h4>Metric</h4><span class="small">Số đo từng máy (CPU, RAM, đĩa, mạng, JVM…) và chỉ số nghiệp vụ theo service.</span></div>
+      <div class="box"><h4>Trace</h4><span class="small">Các span của request đi qua service: thời gian, cha – con, thời lượng.</span></div>
+      <div class="box"><h4>Log</h4><span class="small">Log của service; phần lớn là access log (mỗi request một dòng).</span></div>
+    </div>
+    <p class="lead" style="margin-top:36px">Mỗi ca gồm <b>một câu hỏi</b> về một khoảng thời gian 30 phút và <b>một đáp án đúng</b>.</p>
+    <div class="notes">Bộ dữ liệu OpenRCA công bố ở ICLR 2025: 335 ca lỗi trên 3 hệ thống, tổng 68,5 GB dữ liệu giám sát.</div>
+  </section>
+
+  <section class="slide" data-title="Khó khăn 1: dữ liệu quá lớn">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <div class="sec-sub">Khó khăn 1: dữ liệu quá lớn để đưa hết cho LLM</div>
+    <div class="row" style="align-items:center;gap:70px">
+      <div class="col">
+        <p class="lead">Ví dụ ca <b>Bank</b>, ngày 4/3/2021, khoảng 14:30–15:00:</p>
+        <div class="g2" style="margin:20px 0 26px">
+          <div class="box stat"><div class="v" style="font-size:64px">589.067</div><div class="l">span trace</div></div>
+          <div class="box stat red"><div class="v" style="font-size:64px">≈26,7 tr</div><div class="l">token</div></div>
+        </div>
+        <ul class="dash lead">
+          <li>Gấp <span class="hl">~200 lần</span> cửa sổ ngữ cảnh 128K token của các mô hình dùng trong OpenRCA.</li>
+          <li>Không thể đưa toàn bộ dữ liệu vào mô hình để nó tự tìm nguyên nhân.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tok" id="tok"></div>
+        <div class="legend"><span style="--c:var(--bad)">128K token (ngữ cảnh)</span><span style="--c:#d9dfeb">riêng phần trace</span></div>
+      </div>
+    </div>
+    <div class="notes">Riêng trace của một cửa sổ 30 phút đã khoảng 26,7 triệu token, gấp khoảng 200 lần ngữ cảnh 128K. Mỗi ô vuông bên phải là 128K token, chỉ một ô vừa với mô hình.</div>
+  </section>
+
+  <section class="slide" data-title="Khó khăn 2: lọc theo quy tắc">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <div class="sec-sub">Khó khăn 2: lọc theo quy tắc cố định không đủ</div>
+    <p class="lead">Kết quả tốt nhất của các cách tiếp cận hiện có trên OpenRCA:</p>
+    <div class="bars" style="margin-top:20px">
+      <div class="bar-row"><span>Lọc mạnh: 1 giá trị/phút, 53/1.263 loại metric (~100K token), Claude 3.5</span><div class="bar-track"><div class="bar-fill" style="width:34.2%"></div></div><span class="val">3,88%</span></div>
+      <div class="bar-row"><span>Lọc “hoàn hảo” (cho sẵn đúng metric liên quan), Claude 3.5</span><div class="bar-track"><div class="bar-fill" style="width:47.4%"></div></div><span class="val">5,37%</span></div>
+      <div class="bar-row"><span>Lọc “hoàn hảo”, Gemini 1.5 Pro</span><div class="bar-track"><div class="bar-fill" style="width:63.1%"></div></div><span class="val">7,16%</span></div>
+      <div class="bar-row"><span>Agent tự viết code truy vấn (RCA-agent)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--good)"></div></div><span class="val" style="color:var(--good)">11,34%</span></div>
+      <div class="bar-row"><span>Ca phải đúng cả thành phần, thời điểm và lý do</span><div class="bar-track"><div class="bar-fill" style="width:0"></div></div><span class="val" style="color:var(--bad)">0%</span></div>
+    </div>
+    <p class="lead" style="margin-top:34px">Ngay cả lọc “hoàn hảo” (không khả thi ngoài thực tế) cũng chỉ đạt <b>5,37–7,16%</b>; cách tốt nhất mới đạt <b>11,34%</b>.</p>
+    <div class="src">Nguồn: số liệu công bố trong OpenRCA (ICLR 2025).</div>
+    <div class="notes">Bảng 1: lọc theo quy tắc chỉ được khoảng 4–7%. Agent tự viết code tốt nhất cũng mới 11,34%, và 0% với ca phải đúng cả ba trường.</div>
+  </section>
+
+  <section class="slide" data-title="Các kiểu sai cụ thể">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <div class="sec-sub">Các kiểu sai cụ thể (đếm lại từ kết quả từng ca của OpenRCA)</div>
+    <div class="g3 anim-stagger-list" data-anim-target style="margin-top:10px">
+      <div class="box bad"><div class="stat red" style="padding:6px 0 10px"><div class="v">28,6%</div></div><h4>Sai thời điểm</h4><span class="small">Thời điểm agent đưa ra nằm <b>ngoài khoảng sự cố</b>: chọn nhầm bất thường có từ trước. Trong khi đáp án đúng nằm trong khoảng sự cố ở <b>329/330</b> trường hợp.</span></div>
+      <div class="box bad"><div class="stat red" style="padding:6px 0 10px"><div class="v">76,1%</div></div><h4>Sai loại lỗi</h4><span class="small">Ca <b>lỗi mạng</b> bị trả lời thành lỗi <b>CPU, RAM hoặc đĩa</b>, những bất thường dễ thấy hơn.</span></div>
+      <div class="box bad"><div class="stat red" style="padding:6px 0 10px"><div class="v">−68%</div></div><h4>Code của agent chạy lỗi</h4><span class="small">Kết quả giảm <b>16–18%</b> với Claude và GPT, và giảm <b>68%</b> với Gemini.</span></div>
+    </div>
+    <div class="box navy" style="margin-top:40px">
+      <h4>Nguyên nhân chung</h4>
+      Dữ liệu giám sát chủ yếu là <b>con số và mã định danh</b>, loại dữ liệu LLM xử lý kém. Không xem hết được, agent buộc phải <b>chọn xem gì</b>, và chính việc chọn này đang sai: bị thu hút bởi bất thường dễ thấy nhưng không phải nguyên nhân gốc.
+    </div>
+    <div class="notes">Ba kiểu sai điển hình: nhầm thời điểm, nhầm loại lỗi mạng thành tài nguyên, và code agent chạy lỗi làm kết quả tụt mạnh, nhất là với Gemini.</div>
+  </section>
+
+  <section class="slide" data-title="Tóm tắt phần 1">
+    <div class="sec"><span>01</span><span class="bar"></span><span>Giới thiệu</span></div>
+    <div class="sec-sub">Tóm tắt</div>
+    <div class="g2" style="margin-top:10px">
+      <div class="box"><h4>① Dữ liệu quá lớn</h4>Lớn hơn nhiều lần sức chứa của LLM.</div>
+      <div class="box"><h4>② Chọn sai dữ liệu cần xem</h4>Quy tắc cố định hay agent tự viết code đều chưa chọn đúng, dẫn đến nhầm thời điểm, nhầm loại lỗi, kết quả thấp.</div>
+    </div>
+    <div class="box navy" style="margin-top:44px;text-align:center;padding:40px">
+      <h4 style="font-size:34px">Vấn đề cốt lõi</h4>
+      <span style="font-size:32px">Làm sao <b>chọn đúng phần dữ liệu cần xem</b> để phân biệt nguyên nhân gốc với hệ quả và nhiễu, đồng thời đưa ra <b>bằng chứng đủ tin cậy</b> cho người vận hành.</span>
+    </div>
+    <div class="notes">Tóm lại, vấn đề cốt lõi không phải là thiếu mô hình mạnh mà là chọn đúng dữ liệu cần xem và có bằng chứng.</div>
+  </section>
+
+  <!-- ================= 02 CÁC PHƯƠNG PHÁP HIỆN CÓ ================= -->
+  <section class="slide divider" data-title="02 Phương pháp hiện có">
+    <div class="big">02</div>
+    <h2>Các phương pháp hiện có</h2>
+    <p>Kỹ sư tự điều tra · Sử dụng mô hình ngôn ngữ lớn (LLM)</p>
+  </section>
+
+  <section class="slide" data-title="Quy trình xử lý sự cố">
+    <div class="sec"><span>02</span><span class="bar"></span><span>Các phương pháp hiện có</span></div>
+    <div class="sec-sub">Quy trình xử lý sự cố</div>
+    <p class="lead">Trong thực tế, xử lý sự cố thường đi theo 5 bước:</p>
+    <div class="flow anim-stagger-list" data-anim-target style="margin:30px 0 44px;height:190px">
+      <div class="st"><span class="k">1</span>Phát hiện<br>(qua cảnh báo)</div><div class="ar">→</div>
+      <div class="st"><span class="k">2</span>Khoanh vùng phần bị ảnh hưởng</div><div class="ar">→</div>
+      <div class="st on"><span class="k">3</span><b style="color:#fff">Tìm nguyên nhân gốc</b></div><div class="ar">→</div>
+      <div class="st"><span class="k">4</span>Xử lý</div><div class="ar">→</div>
+      <div class="st"><span class="k">5</span>Rút kinh nghiệm</div>
+    </div>
+    <ul class="dash lead">
+      <li>Các cách làm hiện nay khác nhau chủ yếu ở <b>bước tìm nguyên nhân gốc</b>.</li>
+      <li>Hai cách tiếp cận chính: <b>kỹ sư tự điều tra</b> và <b>sử dụng LLM</b>.</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-title="Kỹ sư tự điều tra">
+    <div class="sec"><span>02</span><span class="bar"></span><span>Các phương pháp hiện có</span></div>
+    <div class="sec-sub">Cách 1: Kỹ sư tự điều tra</div>
+    <p class="lead">Hệ thống giám sát (Prometheus + Grafana cho metric, ELK/Loki cho log) gửi <b>cảnh báo khi vượt ngưỡng</b>. Kỹ sư xem dashboard, đọc log, trace theo trình tự quen thuộc:</p>
+    <div class="flow" style="margin:18px 0 34px;height:110px">
+      <div class="st">Triệu chứng của service</div><div class="ar">→</div>
+      <div class="st">Lần theo đường đi của request</div><div class="ar">→</div>
+      <div class="st">Tài nguyên &amp; log của thành phần nghi ngờ</div>
+    </div>
+    <div class="g2">
+      <div class="box good"><h4>✔ Ưu điểm</h4><ul class="dash small">
+        <li>Hiểu hệ thống, phân biệt được nguyên nhân gốc với hệ quả lan ra.</li>
+        <li>Điều tra có trình tự, kiểm tra lại giả thuyết trước khi kết luận.</li>
+        <li>Kết luận có bằng chứng cụ thể, dễ giải thích.</li></ul></div>
+      <div class="box bad"><h4>✘ Nhược điểm</h4><ul class="dash small">
+        <li>Tốn thời gian, nhất là khi nhiều cảnh báo cùng lúc.</li>
+        <li>Phụ thuộc nhiều vào kinh nghiệm của người trực.</li>
+        <li>Không tự xem hết lượng dữ liệu rất lớn, dễ bỏ sót dấu hiệu.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Sử dụng LLM">
+    <div class="sec"><span>02</span><span class="bar"></span><span>Các phương pháp hiện có</span></div>
+    <div class="sec-sub">Cách 2: Sử dụng mô hình ngôn ngữ lớn (LLM)</div>
+    <p class="lead">Meta, Microsoft đã công bố hệ thống nội bộ theo hướng này; nghiên cứu như <b>OpenRCA</b> để agent LLM tự viết code truy vấn dữ liệu.</p>
+    <div class="row" style="margin-top:18px">
+      <div class="box good" style="flex:0 0 560px"><h4>✔ Ưu điểm</h4><ul class="dash small">
+        <li>Suy luận và giải thích bằng ngôn ngữ tự nhiên, gần giống con người.</li>
+        <li>Có sẵn kiến thức chung về hệ thống phần mềm và lỗi phổ biến.</li>
+        <li>Nhanh, không phụ thuộc người trực.</li></ul></div>
+      <div class="box bad col"><h4>✘ Nhược điểm</h4><ul class="dash small">
+        <li><b>Không đưa hết dữ liệu vào được:</b> dữ liệu lớn hơn rất nhiều lần sức chứa mô hình.</li>
+        <li><b>Xử lý số và tính toán kém:</b> khó so sánh, thống kê, phát hiện bất thường trên con số, mã định danh.</li>
+        <li><b>Dễ bị nhiễu dẫn hướng:</b> bị hút vào nhiễu có từ trước hay lỗi CPU, RAM, đĩa.</li>
+        <li><b>Phụ thuộc chất lượng mô hình:</b> code agent chạy lỗi thì mô hình yếu giảm mạnh hơn.</li>
+        <li><b>Khó kiểm chứng:</b> agent tự chọn dữ liệu, kết luận có thể thiếu bằng chứng.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Nhận xét">
+    <div class="sec"><span>02</span><span class="bar"></span><span>Các phương pháp hiện có</span></div>
+    <div class="sec-sub">Nhận xét: hai cách bổ sung cho nhau</div>
+    <table class="t" style="font-size:27px">
+      <tr><th style="width:24%"></th><th>Kỹ sư tự điều tra</th><th>Sử dụng LLM</th></tr>
+      <tr><td><b>Trình tự điều tra</b></td><td class="ok">✔ Hợp lý, có kiểm chứng</td><td class="hl">✘ Agent tự chọn dữ liệu</td></tr>
+      <tr><td><b>Tốc độ</b></td><td class="hl">✘ Chậm</td><td class="ok">✔ Nhanh</td></tr>
+      <tr><td><b>Lượng dữ liệu</b></td><td class="hl">✘ Không xem hết</td><td class="hl">✘ Không chứa hết</td></tr>
+      <tr><td><b>Xử lý con số</b></td><td class="ok">✔ Có công cụ hỗ trợ</td><td class="hl">✘ Kém, dễ bị nhiễu</td></tr>
+      <tr><td><b>Suy luận, giải thích</b></td><td class="ok">✔ Có</td><td class="ok">✔ Có</td></tr>
+    </table>
+    <div class="box navy" style="margin-top:34px">
+      <h4>→ Hướng kết hợp của đề tài</h4>
+      <div class="g2" style="gap:6px 40px;font-size:27px">
+        <div>• Dùng <b>công cụ</b> tính toán, tổng hợp dữ liệu</div>
+        <div>• Giữ <b>trình tự điều tra</b> giống kỹ sư</div>
+        <div>• Để <b>LLM suy luận</b> trên dữ liệu đã tổng hợp</div>
+        <div>• Có bước <b>kiểm tra lại kết luận</b></div>
+      </div>
+    </div>
+    <div class="notes">Mục tiêu của hướng kết hợp: giảm ảnh hưởng của nhiễu và bớt phụ thuộc vào việc mô hình mạnh hay yếu.</div>
+  </section>
+
+  <!-- ================= 03 MỤC TIÊU & MỨC ĐỘ GIẢI QUYẾT ================= -->
+  <section class="slide divider" data-title="03 Mục tiêu &amp; mức độ giải quyết">
+    <div class="big">03</div>
+    <h2>Mục tiêu &amp; mức độ giải quyết của nhóm</h2>
+    <p>Phương pháp đề xuất: BARO + MicroRank + LLM · ca minh họa · đánh giá</p>
+  </section>
+
+  <section class="slide" data-title="Mục tiêu bài toán">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Mục tiêu bài toán (hệ thống Bank của OpenRCA)</div>
+    <p class="lead">Mỗi sự cố: một <b>cửa sổ 30 phút</b> có 1–2 lỗi. Cần trả lời:</p>
+    <div class="g3" style="margin:16px 0 30px">
+      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Thời điểm</div><div class="l" style="color:#dbe3f2">sai số ≤ 60 giây</div></div>
+      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Máy</div><div class="l" style="color:#dbe3f2">1 trong 14</div></div>
+      <div class="box navy stat"><div class="v" style="color:#fff;font-size:44px">Lý do</div><div class="l" style="color:#dbe3f2">1 trong 8</div></div>
+    </div>
+    <table class="t">
+      <tr><th style="width:45%">14 máy</th><th>8 lý do</th></tr>
+      <tr><td>apache01/02, IG01/02, Tomcat01–04, MG01/02, Mysql01/02, Redis01/02</td><td>high CPU, high memory, network latency, network packet loss, disk I/O read, disk space, JVM CPU load, JVM OOM</td></tr>
+    </table>
+    <p class="lead" style="margin-top:24px">Đánh giá trên <b>40 câu hỏi (44 lỗi)</b> của hệ thống Bank.</p>
+  </section>
+
+  <section class="slide" data-title="Hệ thống Bank">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Hệ thống Bank</div>
+    <svg viewBox="0 0 1660 330" width="1660" height="330" font-family="Be Vietnam Pro, Inter, sans-serif" style="align-self:center">
+      <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#263c6b"/></marker></defs>
+      <g stroke="#263c6b" stroke-width="3" marker-end="url(#a2)">
+        <line x1="230" y1="110" x2="320" y2="110"/><line x1="530" y1="110" x2="620" y2="110"/><line x1="830" y1="110" x2="920" y2="110"/><line x1="1130" y1="110" x2="1220" y2="110"/>
+        <line x1="1025" y1="170" x2="1025" y2="235"/><line x1="725" y1="170" x2="725" y2="235"/>
+      </g>
+      <g text-anchor="middle" font-size="26" font-weight="700">
+        <rect x="20" y="50" width="210" height="120" rx="14" fill="#fbe9d7" stroke="#d9822b" stroke-width="3" stroke-dasharray="9 6"/><text x="125" y="105" fill="#263c6b">apache</text><text x="125" y="140" font-size="20" font-weight="500" fill="#3d4a63">01/02</text>
+        <rect x="320" y="50" width="210" height="120" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="425" y="105" fill="#263c6b">IG</text><text x="425" y="140" font-size="20" font-weight="500" fill="#3d4a63">gateway · 01/02</text>
+        <rect x="620" y="50" width="210" height="120" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="725" y="105" fill="#263c6b">Tomcat</text><text x="725" y="140" font-size="20" font-weight="500" fill="#3d4a63">app, JVM · 01–04</text>
+        <rect x="920" y="50" width="210" height="120" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="1025" y="105" fill="#263c6b">MG</text><text x="1025" y="140" font-size="20" font-weight="500" fill="#3d4a63">middleware · 01/02</text>
+        <rect x="1220" y="50" width="210" height="120" rx="14" fill="#eef2f8" stroke="#263c6b" stroke-width="3"/><text x="1325" y="118" fill="#263c6b">docker</text>
+        <rect x="620" y="235" width="510" height="80" rx="14" fill="#fbe9d7" stroke="#d9822b" stroke-width="3" stroke-dasharray="9 6"/><text x="875" y="285" fill="#263c6b">Mysql01/02 · Redis01/02 (kho dữ liệu)</text>
+      </g>
+      <g font-size="21" fill="#3d4a63"><rect x="1300" y="245" width="26" height="26" rx="5" fill="#fbe9d7" stroke="#d9822b" stroke-width="3" stroke-dasharray="6 4"/><text x="1338" y="266">không có trong trace</text></g>
+    </svg>
+    <ul class="dash lead" style="margin-top:30px">
+      <li>Mỗi tầng có <b>2–4 bản sao</b>: một bản lỗi thì tầng trên chuyển sang bản còn lại.</li>
+      <li>Vì vậy lỗi hay bị che, <span class="hl">người dùng thường không thấy gì</span>.</li>
+      <li>apache, Mysql, Redis <b>không có trong trace</b>; IG, MG, Redis không có log.</li>
+    </ul>
+    <div class="notes">Đặc điểm quan trọng: có bản sao nên failover che lỗi, và một số máy không có trace nên không thể chỉ dựa vào trace.</div>
+  </section>
+
+  <section class="slide" data-title="Ý tưởng chung">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Ý tưởng chung: chia việc cho ba thành phần</div>
+    <div class="g3 anim-stagger-list" data-anim-target style="margin-top:10px">
+      <div class="box" style="border-top:8px solid var(--accent)"><h4>🛠 Công cụ (code)</h4>Tính toán trên <b>toàn bộ dữ liệu giám sát</b>, trả về bản tóm tắt ngắn (vài chục dòng).</div>
+      <div class="box" style="border-top:8px solid var(--good)"><h4 style="color:var(--good)">🧠 LLM</h4>Đọc bản tóm tắt, <b>suy luận</b> dựa trên hiểu biết về hệ thống.<div class="small muted" style="margin-top:10px">VD: “1/4 số request bị lỗi, có thể 1 trong 4 máy cùng tầng gặp sự cố.”</div></div>
+      <div class="box" style="border-top:8px solid var(--warn)"><h4 style="color:var(--warn)">🔁 Workflow (code)</h4>Quy định <b>thứ tự các bước điều tra</b>, kiểm tra kết luận của LLM trước khi đi tiếp.</div>
+    </div>
+    <div class="box navy" style="margin-top:44px;text-align:center">
+      Tránh hai điểm yếu của LLM: <b>không phải tự tính toán trên con số</b> và <b>không tự quyết định nên xem dữ liệu nào</b>.
+    </div>
+    <div class="notes">Không để LLM xử lý toàn bộ dữ liệu, cũng không chỉ dựa vào thống kê. Mỗi thành phần làm phần việc phù hợp với nó.</div>
+  </section>
+
+  <section class="slide" data-title="Workflow điều tra">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Workflow điều tra 5 bước (theo trình tự của kỹ sư vận hành)</div>
+    <table class="t" style="font-size:25px">
+      <tr><th style="width:17%">Bước</th><th style="width:30%">Câu hỏi cần trả lời</th><th style="width:30%">Dữ liệu / công cụ</th><th>Kết quả</th></tr>
+      <tr><td><b>1. Đọc câu hỏi</b></td><td>Khung giờ nào, mấy lỗi, cần trả lời gì?</td><td>Câu hỏi</td><td>Khung giờ, số lỗi, các trường cần trả lời</td></tr>
+      <tr><td><b>2. Triệu chứng</b></td><td>Sự cố bắt đầu, kết thúc lúc nào, ảnh hưởng ra sao?</td><td>Metric nghiệp vụ (số request, tỉ lệ thành công, thời gian phản hồi), số dòng log</td><td>Khoảng thời gian xảy ra sự cố</td></tr>
+      <tr><td><b>3. Khoanh vùng</b></td><td>Thành phần nào là điểm chung của các đoạn bị nghẽn?</td><td>Đồ thị phụ thuộc dịch vụ (công cụ 2)</td><td>Thành phần nghi ngờ</td></tr>
+      <tr><td><b>4. Loại lỗi</b></td><td>Quá tải hay không nhận được request? Lỗi loại nào?</td><td>Phát hiện bất thường trên metric (công cụ 1), log</td><td>Lý do lỗi và bằng chứng</td></tr>
+      <tr><td><b>5. Kiểm chứng</b></td><td>Có phải hiện tượng thường ngày? Bắt đầu chính xác lúc nào?</td><td>So với khoảng bình thường; dữ liệu chi tiết 10 giây</td><td>Kết luận, hoặc quay lại bước 3</td></tr>
+    </table>
+    <p class="lead small" style="margin-top:20px">Kiểm chứng bác bỏ → quay lại khoanh vùng, <b>tối đa 2 lần</b>. Ở mỗi bước, LLM chỉ dùng công cụ của bước đó và chỉ nhận <b>dữ liệu đã tổng hợp</b>.</p>
+  </section>
+
+  <section class="slide" data-title="Pipeline">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Pipeline triển khai: BARO + MicroRank + LLM</div>
+    <div class="pipe" style="margin-top:6px">
+      <div class="pn"><b>Nhận case</b>câu hỏi, khoảng thời gian, số lỗi</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="pn"><b>Triệu chứng</b>metric_app → 1 câu</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="pn"><b>Tool 1 – BARO</b>BOCPD tìm điểm thay đổi + RobustScorer xếp hạng metric</div>
+        <div class="pn"><b>Tool 2 – Graph</b>MicroRank trên trace + so traffic giữa các replica</div>
+      </div>
+      <div class="pn"><b>Chọn ≤ 8 component</b>top BARO + top MicroRank + máy mất traffic</div>
+      <div class="pn"><b>Gom bằng chứng</b>theo nhóm metric: CPU, JVM, RAM, đĩa, mạng…</div>
+    </div>
+    <div style="text-align:right;font-size:40px;color:var(--accent);margin:4px 150px 4px 0">↓</div>
+    <div class="pipe" style="grid-template-columns:1fr 60px 1fr 60px 1fr">
+      <div class="pn" style="background:var(--bg-soft)"><b>Lưu report + đáp án</b>đạt, hoặc hết lượt → đáp án chưa kiểm chứng (đề xuất chuyển cho người xem)</div>
+      <div style="text-align:center;font-size:40px;color:var(--accent)">←</div>
+      <div class="pn chk"><b>Code kiểm tra</b>trong cửa sổ · bằng chứng khớp reason · lệch ≤ 5 phút · không trùng component</div>
+      <div style="text-align:center;font-size:40px;color:var(--accent)">←</div>
+      <div class="pn llm"><b>LLM</b>chọn component, reason, onset, giải thích</div>
+    </div>
+    <p class="small" style="text-align:center;margin-top:12px;color:var(--good);font-weight:600">↻ Chưa đạt: gửi lỗi kiểm tra cho LLM, tối đa 2 lần sửa</p>
+    <div class="box navy" style="margin-top:24px;text-align:center;padding:20px">Code làm các bước cố định; LLM chỉ <b>đọc bằng chứng đã được tóm tắt</b> rồi chọn.</div>
+  </section>
+
+  <section class="slide" data-title="Vai trò từng thành phần">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Vai trò từng thành phần</div>
+    <table class="t" style="font-size:26px">
+      <tr><th style="width:22%">Thành phần</th><th style="width:44%">Làm gì</th><th>Mạnh với</th></tr>
+      <tr><td><b>Triệu chứng</b></td><td>So tỉ lệ thành công, thời gian phản hồi với giờ trước</td><td>Biết người dùng có bị ảnh hưởng không</td></tr>
+      <tr><td><b>BARO</b></td><td>Tìm thời điểm đổi + xếp hạng metric bất thường</td><td>Lỗi <b>tài nguyên</b> (CPU, đĩa, RAM)</td></tr>
+      <tr><td><b>MicroRank</b></td><td>Xếp hạng máy qua các trace chậm</td><td>Lỗi <b>mạng</b> trên máy có trace</td></tr>
+      <tr><td><b>So traffic replica</b></td><td>Máy nào mất phần traffic so với máy anh em</td><td>Máy <b>không có trace</b> (apache)</td></tr>
+      <tr><td><b>LLM</b></td><td>Đọc bằng chứng, lọc nhiễu, chọn đáp án</td><td>Suy luận, phân loại lý do</td></tr>
+      <tr><td><b>Code kiểm chứng</b></td><td>Đáp án có bằng chứng khớp không</td><td>Chặn đáp án thiếu căn cứ</td></tr>
+    </table>
+  </section>
+
+  <section class="slide" data-title="Công cụ 1: BARO">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Công cụ 1: phát hiện bất thường (BARO)</div>
+    <div class="row" style="gap:50px">
+      <div class="col">
+        <ol style="margin:0;padding-left:36px;font-size:27px">
+          <li><b>BOCPD</b> (phát hiện điểm thay đổi kiểu Bayes, đa biến) trên bảng <i>phút × chuỗi</i>: tìm phút <span class="m">\hat t_A</span> hệ thống bắt đầu đổi.</li>
+          <li><b>RobustScorer</b> chấm từng chuỗi: sau <span class="m">\hat t_A</span> lệch bao nhiêu so với trước.</li>
+        </ol>
+        <div class="eq"><span class="m">a_t = \dfrac{|x_t - \text{median}|}{\text{IQR}} \qquad \rho = \max_{t \ge \hat t_A} a_t</span></div>
+        <ul class="dash small">
+          <li>Median, IQR lấy từ giai đoạn trước; <b>ít bị điểm lạ kéo lệch</b> hơn mean/std.</li>
+          <li>Vào: bảng 90 phút × ~1.670 cột <code>&lt;máy&gt;|&lt;kpi&gt;</code>; thêm cột log/trace (multi-source, theo RCAEval).</li>
+          <li>Xếp theo <span class="m">\rho</span> giảm dần; mỗi máy giữ 1 metric mạnh nhất.</li>
+        </ul>
+      </div>
+      <div style="flex:0 0 640px">
+        <p class="small" style="margin-bottom:6px"><b>Ra (đưa cho LLM):</b></p>
+        <pre class="code" style="font-size:21px">Mysql02: LOCALDISK-sda_DSKRead
+  0.40 -&gt; 2308.00 (score 824, 13:22)
+MG02:    TCP FIN-WAIT
+  0.00 -&gt; 6.00    (score 6,   13:11)</pre>
+        <div class="box" style="margin-top:18px;padding:20px 24px">
+          <h4 style="font-size:26px">Thử nghiệm ban đầu (z-score)</h4>
+          <div class="g2" style="gap:14px">
+            <div class="stat" style="padding:4px"><div class="v" style="font-size:56px;color:var(--good)">64%</div><div class="l" style="font-size:20px">đáp án nằm trong top-3</div></div>
+            <div class="stat red" style="padding:4px"><div class="v" style="font-size:56px">41%</div><div class="l" style="font-size:20px">ứng viên top-1 đúng</div></div>
+          </div>
+          <div class="small muted">Yếu với lỗi mạng → cần công cụ 2.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Công cụ 2: Graph">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Công cụ 2: đồ thị phụ thuộc dịch vụ (MicroRank + so traffic)</div>
+    <div class="row" style="gap:50px">
+      <div class="col">
+        <p class="small"><b>Thao tác</b> = máy + phía (<code>Tomcat04:call</code> / <code>Tomcat04:serve</code>)</p>
+        <ol style="margin:0 0 10px;padding-left:36px;font-size:26px">
+          <li>Mức bình thường mỗi thao tác = mean + std ở giờ trước.</li>
+          <li>Trace <b>bất thường</b> nếu <span class="m">d_{trace} &gt; \sum_{op} (\mu_{op} + \sigma_{op}) + 50\,\text{ms}</span></li>
+          <li><b>PageRank cá nhân hóa</b> (d = 0.85, 25 vòng) trên đồ thị thao tác–trace.</li>
+          <li>Điểm phổ <b>DStar2</b>: <span class="m">\text{score}(op) = \dfrac{e_f^2}{e_p + n_f}</span></li>
+        </ol>
+        <p class="small muted">Ví dụ: 802.228 span → 40.827 trace → <code>IG02: 1.00, Tomcat01: 0.98, IG01: 0.76…</code></p>
+      </div>
+      <div style="flex:0 0 640px">
+        <div class="box good">
+          <h4>Bổ sung của nhóm: so traffic replica</h4>
+          <span class="small">Cho máy <b>không có trace</b> (apache: dùng số dòng access log).</span>
+          <div class="eq" style="font-size:28px"><span class="m">share_i(t) = \dfrac{n_i(t)}{\sum_j n_j(t)}</span></div>
+          <span class="small">Cảnh báo nếu <span class="m">share_i(t) &lt; 0.5 \cdot share_i^{\text{bình thường}}</span> trong ≥ 2 phút.</span>
+        </div>
+        <div class="box" style="margin-top:20px;padding:20px 24px"><span class="small">So máy cùng tầng: <b>1/4 máy</b> bất thường → lỗi ở máy đó; <b>cả 4</b> bất thường → nghi tầng phía sau.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="LLM và kiểm chứng">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">LLM suy luận trên kết quả tool + kiểm chứng bằng code</div>
+    <div class="g2">
+      <div class="box">
+        <h4>Đầu vào (~60 dòng, code dựng sẵn)</h4>
+        <span class="small">Máy &amp; lý do hợp lệ · triệu chứng · kết quả BARO · kết quả Graph · bằng chứng từng ứng viên · <b>quy tắc backend</b>, ví dụ:</span>
+        <ul class="dash small" style="margin-top:10px">
+          <li>CPU của OS tăng, JVM CPU không đổi → <code>high CPU usage</code></li>
+          <li>Máy mất traffic, máy anh em nhận thêm, CPU/RAM/đĩa không đổi → <b>lỗi mạng ở máy mất</b></li>
+          <li>Đột biến 1 điểm, hoặc bất thường từ trước → không phải nguyên nhân</li>
+        </ul>
+      </div>
+      <div>
+        <div class="box navy"><h4>Đầu ra: JSON theo schema</h4><code style="font-size:24px">{component, reason, onset_minute, why}</code></div>
+        <div class="box good" style="margin-top:24px">
+          <h4>Kiểm chứng (code)</h4>
+          <ul class="dash small">
+            <li>Phút nằm trong cửa sổ câu hỏi</li>
+            <li>Bằng chứng khớp loại lỗi</li>
+            <li>Bằng chứng bắt đầu cách phút chọn ≤ 5 phút</li>
+            <li>Không trùng máy; số lỗi khớp câu hỏi</li>
+          </ul>
+          <span class="small">Sai → gửi lỗi cho LLM, <b>tối đa 2 lần sửa</b>.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Ca xử lý tốt">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Ca minh họa: LLM xử lý tốt</div>
+    <div class="g2">
+      <div class="box good">
+        <div class="case-h"><h4 style="margin:0">MG02 mất gói (13:10)</h4><span class="tag" style="color:var(--good)">✔ đúng</span></div>
+        <p class="small muted">Hỏi máy + lý do · không có ảnh hưởng nghiệp vụ (failover che lỗi)</p>
+        <ul class="dash small">
+          <li><b>BARO:</b> đầu bảng là nhiễu: đĩa Mysql02 (824), core apache01 (412); MG02 chỉ FIN-WAIT 0→6.</li>
+          <li><b>Graph:</b> MicroRank xếp IG02 đầu, <i>nhưng</i> MG02 còn <b>0% traffic</b> từ 13:10, MG01 nhận thay.</li>
+          <li><b>LLM:</b> bỏ qua hạng đầu, theo tóm tắt + quy tắc → <b>MG02, packet loss, 13:10</b></li>
+        </ul>
+        <p class="small" style="margin:8px 0 0"><span class="ok">Ưu:</span> lọc được nhiễu, không nhầm máy khỏe. <span class="hl">Nhược:</span> dựa vào một tín hiệu duy nhất.</p>
+      </div>
+      <div class="box good">
+        <div class="case-h"><h4 style="margin:0">Tomcat02 OOM (16:23)</h4><span class="tag" style="color:var(--good)">✔ đúng</span></div>
+        <p class="small muted">Chỉ hỏi thời điểm · phản hồi lên tới 9 giây</p>
+        <ul class="dash small">
+          <li>MicroRank xếp <b>MG02 hạng 1</b> (độ trễ lan từ Tomcat02).</li>
+          <li>LLM lần 1 chọn MG02, lấy nhầm số liệu của MG01.</li>
+          <li><b>Code kiểm chứng bắt được</b>: MG02 không có bằng chứng.</li>
+          <li>LLM lần 2: <b>Tomcat02, 16:24</b> (trong ±60 giây)</li>
+        </ul>
+        <p class="small" style="margin:8px 0 0"><span class="ok">Ưu:</span> vòng kiểm chứng sửa được lỗi. <span class="hl">Nhược:</span> lý do chọn là CPU/memory thay vì OOM (chưa dùng log GC).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Ca chưa xử lý tốt">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Ca minh họa: LLM chưa xử lý tốt</div>
+    <div class="g2">
+      <div class="box bad">
+        <div class="case-h"><h4 style="margin:0">apache01 mất gói (20:25)</h4><span class="tag" style="color:var(--bad)">✘ sai</span></div>
+        <p class="small muted">Hỏi cả 3 trường · apache không có trace</p>
+        <ul class="dash small">
+          <li><b>BARO:</b> FIN-WAIT 0→59 <b>bị loại</b> (cột hằng số trước đó); đầu bảng là nhiễu, đĩa MG02 0→152 chỉ 1 phút.</li>
+          <li><b>Graph:</b> ✔ apache01 chỉ còn 5% traffic từ 20:25.</li>
+          <li><b>LLM:</b> chọn <b>MG02, disk I/O, 20:13</b>: bị con số 152 thu hút; kiểm chứng vẫn cho qua.</li>
+        </ul>
+        <p class="small" style="margin:8px 0 0"><span class="hl">Nhược:</span> tool đã tìm đúng nhưng nhiễu lấn át; BARO mất tín hiệu; kiểm chứng lỏng.</p>
+      </div>
+      <div class="box bad">
+        <div class="case-h"><h4 style="margin:0">Tomcat01 network latency (11:20)</h4><span class="tag" style="color:var(--bad)">✘ sai lý do</span></div>
+        <p class="small muted">Hỏi máy + lý do · tỉ lệ thành công còn ~75%</p>
+        <ul class="dash small">
+          <li>Access log Tomcat01 về 0, 60 kết nối FIN-WAIT, packet ~1.050 → ~100.</li>
+          <li>MicroRank xếp <b>IG02, IG01 đầu</b>: thiên về máy nằm trên nhiều đường đi.</li>
+          <li>Tìm đúng Tomcat01 nhưng chọn <i>packet loss</i>, đáp án là <b>latency</b>.</li>
+        </ul>
+        <p class="small" style="margin:8px 0 0"><span class="hl">Nhược:</span> latency rất lớn và loss cho cùng biểu hiện; cần thời gian từng cạnh gọi (timeout 15,4 s).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Mức độ giải quyết">
+    <div class="sec"><span>03</span><span class="bar"></span><span>Mục tiêu &amp; mức độ giải quyết</span></div>
+    <div class="sec-sub">Mức độ giải quyết</div>
+    <div class="g3" style="gap:26px">
+      <div class="box good"><h4>✔ Đã giải quyết</h4><ul class="dash small">
+        <li>Không đưa toàn bộ dữ liệu cho LLM: tool tóm tắt còn ~60 dòng</li>
+        <li>LLM không tự tính toán trên con số</li>
+        <li>Code cố định: <b>tái lập, kiểm chứng được</b>, nhanh</li>
+        <li>Hai tool bù nhau: tài nguyên và mạng</li>
+        <li>Vòng kiểm chứng bắt đáp án thiếu căn cứ</li></ul></div>
+      <div class="box warn"><h4>◐ Giải quyết một phần</h4><ul class="dash small">
+        <li>Lọc nhiễu: được khi tóm tắt rõ, nhưng nhiễu lớn vẫn lấn át</li>
+        <li>Máy không có trace: tool so traffic tìm đúng, LLM chưa luôn theo</li>
+        <li>Kiểm chứng còn lỏng; hết lượt vẫn nộp đáp án chưa kiểm chứng</li>
+        <li>BARO mất cột “phẳng rồi bật lên”; MicroRank thiên về IG/MG</li></ul></div>
+      <div class="box bad"><h4>✘ Chưa giải quyết</h4><ul class="dash small">
+        <li>Phân biệt <b>latency</b> và <b>packet loss</b></li>
+        <li>Chưa dùng log GC (lỗi OOM)</li>
+        <li>Bằng chứng gom sẵn, chưa <b>đi lấy thêm theo giả thuyết</b></li>
+        <li>Chưa phân tích thời gian từng cạnh gọi</li></ul></div>
+    </div>
+    <div class="box navy" style="margin-top:30px">
+      <h4>Hướng phát triển</h4>
+      Truy xuất bằng chứng theo giả thuyết · So với cùng giờ ngày khác · Phân tích từng cạnh gọi · Chuyển cho người xem khi không chắc
+    </div>
+  </section>
+
+  <section class="slide divider" data-title="Cảm ơn">
+    <h2 style="margin:0 0 24px">Cảm ơn thầy cô và các bạn<br>đã lắng nghe!</h2>
+    <p>Hỏi &amp; đáp</p>
+  </section>
+
+</div>
+<script>
+// token grid: 200 ô, mỗi ô ≈ 128K token; 1 ô = cửa sổ ngữ cảnh
+(function(){var g=document.getElementById('tok');if(!g)return;var h='';for(var i=0;i<200;i++)h+='<i'+(i===0?' class="on"':'')+'></i>';g.innerHTML=h;})();
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script>
+window.addEventListener('load',function(){
+  if(!window.katex)return;
+  document.querySelectorAll('.m').forEach(function(el){
+    try{katex.render(el.textContent,el,{throwOnError:false,displayMode:false});}catch(e){}
+  });
+});
+</script>
+<script src="assets/runtime.js"></script>
+</body>
+</html>
